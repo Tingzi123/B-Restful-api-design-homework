@@ -19,8 +19,25 @@ public class UserService {
         return true;
     }
 
+    public boolean deleteUserById(String userId){
+        userRepository.deleteUserById(userId);
+        return true;
+    }
+
     public List<User> getUsers(String gender) {
         List<User> users = userRepository.findAllByGender(gender);
         return users;
+    }
+
+    public User getUserById(String userId){
+        User user=userRepository.findOneById(userId);
+
+        return user;
+    }
+
+    public User updateUserById(String userId,User user){
+        userRepository.findOneById(userId);
+        userRepository.save(user);
+        return user;
     }
 }

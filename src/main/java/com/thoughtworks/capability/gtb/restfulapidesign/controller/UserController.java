@@ -17,7 +17,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/user/v1")
+    @PostMapping(value = "/v1")
     public ResponseEntity addUser(@RequestBody User user) {
         boolean result = userService.addUser(user);
 
@@ -28,10 +28,35 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping(value = "/users/v1")
-    public ResponseEntity getUsers(@RequestParam(required = false) String gender) {
+    @DeleteMapping(value = "/{userId}/v1")
+    public ResponseEntity deleteUser(@PathVariable String userId ) {
+        boolean result = userService.deleteUserById(userId);
+
+        if (!result) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping(value = "/v1")
+    public ResponseEntity<List<User>> getUsers(@RequestParam(required = false) String gender) {
         List<User> users = userService.getUsers(gender);
 
         return ResponseEntity.ok().body(users);
+    }
+
+    @GetMapping(value = "/{userId}/v1")
+    public ResponseEntity<User> getUserByUserId(@PathVariable String userId) {
+        User user = userService.getUserById(userId);
+
+        return ResponseEntity.ok().body(user);
+    }
+
+    @PutMapping(value = "/{userId}/v1")
+    public ResponseEntity<User> updateUserById(@PathVariable String userId,@RequestBody User user) {
+        User userResult = userService.updateUserById(userId,user);
+
+        return ResponseEntity.ok().body(userResult);
     }
 }
