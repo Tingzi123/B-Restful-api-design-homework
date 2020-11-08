@@ -27,9 +27,11 @@ public class UserGroupService {
 
         Collections.shuffle(usersTmp);
 
+        userGroupRepository.initUserGroups();
+
         int groupNum = 6;
-        for (int i = 0; i < groupNum; i++) {
-            userGroupRepository.findOneByGroupId("i").getUsers().add(usersTmp.get(i));
+        for (int i = 0; i < usersTmp.size(); i++) {
+            userGroupRepository.findOneByGroupId(""+i+1%groupNum).getUsers().add(usersTmp.get(i));
         }
 
         for (UserGroup ug:userGroupRepository.findAll()){
